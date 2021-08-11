@@ -1,0 +1,167 @@
+---
+title: "The Very Basics of Working in R"
+author: ""
+date: ""
+output: 
+  html_document:
+    theme: cerulean
+    toc: true
+    toc_float:
+      collapsed: false
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Basic Mathematical Operations
+R can do basic math operations.  
+Type 1+1 on the first line of your R script file.  
+What happens?  
+
+NOTHING!  
+That's because at this point, all you have done is told the computer that you are **GOING** to ask it to complete 1+1, but you haven't asked it to actually **DO** the operation yet.  
+
+Let's tell it to complete this operation.  This can be done using a button in R, or using a keyboard shortcut.  
+You can highlight the line of code you want executed, and click ![](images/Run.png) at the top right of the Rscript panel, or you can put your cursor anywhere on that line of code and hit **CTRL** and **Return**  
+
+Try this (you can try it both ways)...  Now what happens?  
+
+Notice that the answer does not appear in your R script, it appears down in the console.  
+![](images/Math.png)  
+This is one difference between an R script and and R markdown.  R markdown (as we will see later) will show the response of running the code in the R markdown document.
+
+R can do all of the basic math operations.
+![](images/Operations.png)  
+
+Try using some different operations.  
+Remember that if you have more than one line of code, you will need to highlight it before telling the computer to run if you want it to run multiple lines.  
+
+R understands the basic order of operations.  
+Try computing 20 * 4 + 1.  
+Now try computing 20 * (4 + 1).  
+Determine if 8112021 is divisible by 3.  
+what about 8162021? 
+Trig functions also work.  Try cos(0).  
+
+# Assigning Variables
+You can assign values to objects with `<-`, the assignment operator.  
+The keyboard shortcut for this (because no one wants to actually type the < and - keys) is...  
+* For Windows users: `alt` + `-`  
+* For Mac users: `cmd` + `-` 
+* As a side note, for Windows users if you mistakenly hit `ctrl` + `-` it will shrink the size of your font. (This is very annoying!)  To increase it again, use `ctrl` + `shift` + `=`  (aka `ctrl` + `+`).  
+```{r}
+x <- 10
+x + 5
+```
+After running this code, you will notice that there is now something in the **Environment** tab in the upper right corner of your screen - it shows that you have assigned the value of 10 to the variable x.
+
+You can also perform operations on variables.
+```{r}
+y <- 20
+x+y
+```
+```{r}
+x-y
+```
+```{r}
+y %% x
+```
+
+# Using Functions
+Every programming language uses functions.  in R, they typically look something like:  
+function_name(arg_1= ..., arg_2= ....)  
+
+As an example, the `seq` function requires 3 arguments.  It takes a starting number, an ending number, and an interval, and returns a sequence of numbers based on those inputs.
+```{r}
+#seq(arg_1=starting number, arg_2=ending number, arg_3=interval)
+# So if you would like to count from 1 to 20 by 2s, you would type:
+seq(1,20,2)
+```
+Note that since I told it to start at 1, it reports all the odd numbers.  If I had told it to start at 0, we would have gotten the even numbers.
+```{r}
+seq(0,20,2)
+```
+Just like we assigned numeric values to variables, we can assign the output of functions to variables as well.
+```{r}
+a <- seq(0,20,2)
+```
+Note that when we run this code, our console just shows the function, it doesn't report the output.  But we see that we have a new variable in our environment list.  
+To look at the output of this function, we now need to call the variable that we have it assigned to.
+```{r}
+a
+```
+Just like with our other variables, we can do other stuff to this variable.  For example;
+```{r}
+a+2
+```
+We've now added 2 to each of the elements in our list of numbers.  
+try calling `a` again and see what you get.
+```{r eval=FALSE}
+a
+```
+Did performing the operation on it change the numbers stored in a?
+
+If you wanted to store the new output, you would need to assign it to a new (or the same) variable.
+```{r}
+b <- a+2
+```
+a = `r a`  
+b = `r b`
+```{r}
+b <- b+2
+```
+Now, b = `r b` 
+
+Another function that can be useful with lists of numbers is `length`.
+```{r}
+length(a)
+```
+This returns the number of elements that are in our object.  This can be useful when determining why code doesn't work.
+```{r}
+c <- seq(0,12,1)
+a + c
+```
+In this case, we got an error, but R then tried to go ahead and execute what we asked and gave us an answer.  But what it did it do?  
+a  = `r a`  
+c  = `r c`  
+a+c = `r a+c`  
+
+
+Numbers are not the only things that can be assigned to variables.  
+Characters can also be assigned to variables:
+```{r}
+d <- "I Love"
+e <- "dogs"
+```
+
+What happens if we do `d + e`?
+
+We get an error because the computer doesn't know how to perform addition on two sets of letters (neither do I, for that matter!).  
+What if we want to write the sentence "I Love dogs" using our variables?
+```{r eval=FALSE}
+d e
+```
+We get an error!
+
+What about
+```{r eval=FALSE}
+d
+e
+```
+This is closer to what we want.  But how do we get it on one line?
+
+We use another function - `paste`
+```{r}
+paste(d,e)
+```
+
+Ahhh!  Success!
+
+# Data Structure and Objects
+
+Programming languages often refer to different types of data structures or Objects (in Java).  
+Some of the common types of data structures in R are: Vectors, Lists, Matrices, Arrays, Factors, and Data frames.
+
+## 
