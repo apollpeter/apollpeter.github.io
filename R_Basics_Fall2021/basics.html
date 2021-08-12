@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="" />
+
+
+<title>The Very Basics of Working in R</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R Basics Fall 2021</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="intro.html">Introduction</a>
+</li>
+<li>
+  <a href="basics.html">The Basics</a>
+</li>
+<li>
+  <a href="data.html">Working With Data</a>
+</li>
+<li>
+  <a href="graphs.html">Visualizing Data</a>
+</li>
+<li>
+  <a href="resources.html">Resources</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">The Very Basics of Working in R</h1>
+
+</div>
+
+
+<div id="basic-mathematical-operations" class="section level1">
+<h1>Basic Mathematical Operations</h1>
+<p>R can do basic math operations.<br />
+Type 1+1 on the first line of your R script file.<br />
+What happens?</p>
+<p>NOTHING!<br />
+That’s because at this point, all you have done is told the computer that you are <strong>GOING</strong> to ask it to complete 1+1, but you haven’t asked it to actually <strong>DO</strong> the operation yet.</p>
+<p>Let’s tell it to complete this operation. This can be done using a button in R, or using a keyboard shortcut.<br />
+You can highlight the line of code you want executed, and click <img src="images/Run.png" /> at the top right of the Rscript panel, or you can put your cursor anywhere on that line of code and hit <code>ctrl</code> and <code>enter</code></p>
+<p>Try this (you can try it both ways)… Now what happens?</p>
+<p>Notice that the answer does not appear in your R script, it appears down in the console.<br />
+<img src="images/Math.png" /><br />
+This is one difference between an R script and and R markdown. R markdown (as we will see later) will show the response of running the code in the R markdown document.</p>
+<div id="r-can-do-all-of-the-basic-math-operations." class="section level4">
+<h4>R can do all of the basic math operations.</h4>
+<p><img src="images/Operations.png" /></p>
+<p>Try using some different operations.<br />
+Remember that if you have more than one line of code, you will need to highlight it before telling the computer to run if you want it to run multiple lines.</p>
+<p>R understands the basic order of operations.<br />
+Try computing 20 * 4 + 1.<br />
+Now try computing 20 * (4 + 1).<br />
+Determine if 8112021 is divisible by 3. Hint use the <code>%%</code> operator (it’s the % twice).<br />
+what about 8162021?<br />
+Trig functions also work.<br />
+Try cos(0).</p>
+</div>
+</div>
+<div id="assigning-variables" class="section level1">
+<h1>Assigning Variables</h1>
+<p>You can assign values to objects with <code>&lt;-</code>, the assignment operator.<br />
+The keyboard shortcut for this (because no one wants to actually type the &lt; and - keys) is…<br />
+<em>For Windows users: <code>alt</code> + <code>-</code><br />
+</em>For Mac users: <code>cmd</code> + <code>-</code><br />
+*As a side note, for Windows users if you mistakenly hit <code>ctrl</code> + <code>-</code> it will shrink the size of your font. (This is very annoying!) To increase it again, use <code>ctrl</code> + <code>shift</code> + <code>=</code> (aka <code>ctrl</code> + <code>+</code>).<br />
+Try this code:</p>
+<pre class="r"><code>x &lt;- 10
+x + 5</code></pre>
+<pre><code>## [1] 15</code></pre>
+<p>After running this code, you will notice that there is now something in the <strong>Environment</strong> tab in the upper right corner of your screen - it shows that you have assigned the value of 10 to the variable x.</p>
+<p>You can also perform operations on variables.</p>
+<pre class="r"><code>y &lt;- 20
+x+y</code></pre>
+<pre><code>## [1] 30</code></pre>
+<pre class="r"><code>x-y</code></pre>
+<pre><code>## [1] -10</code></pre>
+<pre class="r"><code>y %% x</code></pre>
+<pre><code>## [1] 0</code></pre>
+</div>
+<div id="using-functions" class="section level1">
+<h1>Using Functions</h1>
+<p>Every programming language uses functions. in R, they typically look something like:<br />
+function_name(arg_1= …, arg_2= ….)</p>
+<p>As an example, the <code>seq</code> function requires 3 arguments. It takes a starting number, an ending number, and an interval, and returns a sequence of numbers based on those inputs.</p>
+<pre class="r"><code>#seq(arg_1=starting number, arg_2=ending number, arg_3=interval)
+# So if you would like to count from 1 to 20 by 2s, you would type:
+seq(1,20,2)</code></pre>
+<pre><code>##  [1]  1  3  5  7  9 11 13 15 17 19</code></pre>
+<p>Note that since I told it to start at 1, it reports all the odd numbers. If I had told it to start at 0, we would have gotten the even numbers.</p>
+<pre class="r"><code>seq(0,20,2)</code></pre>
+<pre><code>##  [1]  0  2  4  6  8 10 12 14 16 18 20</code></pre>
+<p>Just like we assigned numeric values to variables, we can assign the output of functions to variables as well.</p>
+<pre class="r"><code>a &lt;- seq(0,20,2)</code></pre>
+<p>Note that when we run this code, our console just shows the function, it doesn’t report the output. But we see that we have a new variable,<code>a</code> in our environment list.<br />
+To look at the output of this function, we now need to call the variable that we have it assigned to. Essentially this can be done by telling it to <code>print</code> the variable. In R, you can either use the command <code>print(a)</code> or just type <code>a</code>. Both will give the same result.</p>
+<pre class="r"><code>a</code></pre>
+<pre><code>##  [1]  0  2  4  6  8 10 12 14 16 18 20</code></pre>
+<pre class="r"><code>print(a)</code></pre>
+<pre><code>##  [1]  0  2  4  6  8 10 12 14 16 18 20</code></pre>
+<p>Just like with our other variables, we can do other stuff to this variable. For example;</p>
+<pre class="r"><code>a+2</code></pre>
+<pre><code>##  [1]  2  4  6  8 10 12 14 16 18 20 22</code></pre>
+<p>We’ve now added 2 to each of the elements in our list of numbers.<br />
+try calling <code>a</code> again and see what you get.</p>
+<pre class="r"><code>a</code></pre>
+<p>Did performing the operation on it change the numbers stored in a?</p>
+<p>If you wanted to store the new output, you would need to assign it to a new (or the same) variable.</p>
+<pre class="r"><code>b &lt;- a+2</code></pre>
+<p>a = 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20<br />
+b = 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22</p>
+<pre class="r"><code>b &lt;- b+2</code></pre>
+<p>Now, b = 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24</p>
+<p>Another function that can be useful with lists of numbers is <code>length</code>.</p>
+<pre class="r"><code>length(a)</code></pre>
+<pre><code>## [1] 11</code></pre>
+<p>This returns the number of elements that are in our object. This can be useful when determining why code doesn’t work.</p>
+<pre class="r"><code>c &lt;- seq(0,12,1)
+a + c</code></pre>
+<pre><code>## Warning in a + c: longer object length is not a multiple of shorter object
+## length</code></pre>
+<pre><code>##  [1]  0  3  6  9 12 15 18 21 24 27 30 11 14</code></pre>
+<p>In this case, we got an error, but R then tried to go ahead and execute what we asked and gave us an answer. But what it did it do?<br />
+a = 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20<br />
+c = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12</p>
+<p>Numbers are not the only things that can be assigned to variables.<br />
+Characters can also be assigned to variables:</p>
+<pre class="r"><code>d &lt;- &quot;I Love&quot;
+e &lt;- &quot;dogs&quot;</code></pre>
+<p>What happens if we do <code>d + e</code>?</p>
+<p>We get an error because the computer doesn’t know how to perform addition on two sets of letters (neither do I, for that matter!).<br />
+What if we want to write the sentence “I Love dogs” using our variables?</p>
+<pre class="r"><code>d e</code></pre>
+<p>We get an error!</p>
+<p>What about</p>
+<pre class="r"><code>d
+e</code></pre>
+<p>This is closer to what we want. But how do we get it on one line?</p>
+<p>We use another function - <code>paste</code></p>
+<pre class="r"><code>paste(d,e)</code></pre>
+<pre><code>## [1] &quot;I Love dogs&quot;</code></pre>
+<p>Ahhh! Success!</p>
+<p>Remember the quote from the first page: You have not failed, you’ve just found 10,000 ways that won’t work!</p>
+</div>
+<div id="data-structure-and-objects" class="section level1">
+<h1>Data Structure and Objects</h1>
+<p>Programming languages often refer to different types of data structures or Objects (in Java).<br />
+Some of the common types of data structures in R are: Vectors, Lists, Matrices, Arrays, Factors, and Data frames.</p>
+<div id="vectors" class="section level2">
+<h2>Vectors</h2>
+<p>Vectors are the simplest data structure in R. They are defined as “a single entity consisting of a collection of things.” Basically they are a list of “things”.<br />
+“Things” can be numbers, letters, words, etc.<br />
+The simplest way to create a vector is using the <code>c()</code> command (Concatenate - Link things together in a chain or a series).</p>
+<pre class="r"><code>v &lt;- c(1,2,3,4)
+v</code></pre>
+<pre><code>## [1] 1 2 3 4</code></pre>
+<p>Our lists of numbers that we created earlier using the <code>seq</code> command are vectors.</p>
+<p>The command <code>typeof()</code> can be used to determine what type of vector an object is.</p>
+<pre class="r"><code>m &lt;- c(1,2,3,4,5)
+n &lt;- seq(1,10)
+g &lt;- c(&quot;Hi&quot;, &quot;Hello&quot;, &quot;Aloha&quot;, &quot;What&#39;s up&quot;, &quot;Hey&quot;, &quot;Hola&quot;)
+l &lt;- c(TRUE, FALSE, T, F, T, T, F, F)
+typeof(m)</code></pre>
+<pre><code>## [1] &quot;double&quot;</code></pre>
+<pre class="r"><code>typeof(n)</code></pre>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<pre class="r"><code>typeof(g)</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<pre class="r"><code>typeof(l)</code></pre>
+<pre><code>## [1] &quot;logical&quot;</code></pre>
+<p>m: 1, 2, 3, 4, 5 is a “double” vector. It consists of floating point numbers.<br />
+n: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 is a “integer” vector. It consists of integers (no decimels).<br />
+g: Hi, Hello, Aloha, What’s up, Hey, Hola is a “character” vector. It consists of letters (in this case words consisting of letters).<br />
+l: TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE is a “logical” vector. It consists of a collection of True or False statements. Note that logical data types in R are case sensitive. TRUE, FALSE, T, and F are all valid logical data types. True and False, as well as true and false, and t and f are not logical data types.</p>
+<p>Just because you see a number, do not assume that it is a numerical (floating point or integer) data type.</p>
+<p>Try this:</p>
+<pre class="r"><code>nu &lt;- &quot;8&quot;
+nu</code></pre>
+<pre><code>## [1] &quot;8&quot;</code></pre>
+<p>What do you think <code>typeof(nu)</code> would return?</p>
+<pre class="r"><code>typeof(nu)</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<p>Why is not “double” or “integer”?</p>
+<p>The <code>c()</code> command can also be used to add “things” to an existing vector:</p>
+<pre class="r"><code>m &lt;- c(m, 6,7,8,9,10)
+m</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<p>Notice how here I did not have to create a different name for the longer vector. It just replaced the old one. This is something to keep in mind. R will not prompt you that it is “replacing” your old data structure (like Windows does if you try to save a file with the same name as an existing one), it just does it.</p>
+<p>This is a good time to talk about how to handle data. With your actual data, the original data should be treated as READ ONLY. Thus, you never use the same name as the data when you are changing something in the data. The first time it is imported and something is changed, you always want to assign it a new name.</p>
+<p>You can also include a command inside the <code>c()</code> command:</p>
+<pre class="r"><code>n &lt;- c(n, seq(11,20))
+n</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20</code></pre>
+</div>
+<div id="matrices" class="section level2">
+<h2>Matrices</h2>
+<p>In R, a matrix is a collection of elements of <strong>the same data type</strong> arranged into a fixed number of rows and columns. You can create a matrix using the <code>matrix()</code> function. The function takes a list of the elements you want in the matrix, whether you want it to fill across the row first or down a column first, and the number of rows you want it to have.</p>
+<pre class="r"><code>mat &lt;- matrix(1:12, byrow=TRUE, nrow=3)
+mat</code></pre>
+<pre><code>##      [,1] [,2] [,3] [,4]
+## [1,]    1    2    3    4
+## [2,]    5    6    7    8
+## [3,]    9   10   11   12</code></pre>
+<p>Compare this with the following example:</p>
+<pre class="r"><code>mat2 &lt;- matrix(1:12, byrow=FALSE, nrow=3)
+mat2</code></pre>
+<pre><code>##      [,1] [,2] [,3] [,4]
+## [1,]    1    4    7   10
+## [2,]    2    5    8   11
+## [3,]    3    6    9   12</code></pre>
+<p>What do you think will happen if we give the following command:</p>
+<pre class="r"><code>matrix(1:12, byrow=TRUE, nrow=5, ncol = 4)</code></pre>
+<p>Let’s see:</p>
+<pre class="r"><code>matrix(1:12, byrow=TRUE, nrow=5, ncol=4)</code></pre>
+<pre><code>## Warning in matrix(1:12, byrow = TRUE, nrow = 5, ncol = 4): data length [12] is
+## not a sub-multiple or multiple of the number of rows [5]</code></pre>
+<pre><code>##      [,1] [,2] [,3] [,4]
+## [1,]    1    2    3    4
+## [2,]    5    6    7    8
+## [3,]    9   10   11   12
+## [4,]    1    2    3    4
+## [5,]    5    6    7    8</code></pre>
+<p>Another example where R will try to do what you ask, even if it might not really be what you want!</p>
+</div>
+<div id="arrays" class="section level2">
+<h2>Arrays</h2>
+<p>Where matrices are two-dimensional, arrays are 3-dimensional. Matrices can be thought of as (row * column). Arrays can be thought of as (row * column * height). Another way to think of it is an array is like a stack of matrices. Similar to matrices, arrays must contain the same data types. Arrays are not used as often as other data structures.</p>
+<pre class="r"><code># Here we are going to create 2 vectors and use them to create an array
+vector1 &lt;- seq(5,20,5)
+vector2 &lt;- seq(25,60,5)
+vector1</code></pre>
+<pre><code>## [1]  5 10 15 20</code></pre>
+<pre class="r"><code>vector2</code></pre>
+<pre><code>## [1] 25 30 35 40 45 50 55 60</code></pre>
+<pre class="r"><code># Now we will create the array
+ArrayEx &lt;- array(c(vector1,vector2), dim=c(4,4,3))
+ArrayEx</code></pre>
+<pre><code>## , , 1
+## 
+##      [,1] [,2] [,3] [,4]
+## [1,]    5   25   45    5
+## [2,]   10   30   50   10
+## [3,]   15   35   55   15
+## [4,]   20   40   60   20
+## 
+## , , 2
+## 
+##      [,1] [,2] [,3] [,4]
+## [1,]   25   45    5   25
+## [2,]   30   50   10   30
+## [3,]   35   55   15   35
+## [4,]   40   60   20   40
+## 
+## , , 3
+## 
+##      [,1] [,2] [,3] [,4]
+## [1,]   45    5   25   45
+## [2,]   50   10   30   50
+## [3,]   55   15   35   55
+## [4,]   60   20   40   60</code></pre>
+<p>As you can see, we now have 3 matrices, each containing 4 rows and 4 columns created from the values in the two vectors. This is an array that is 3 dimension (rows = 4, columns = 4, height=3).<br />
+I personally do not use the array data type all that often when working in R.</p>
+</div>
+<div id="lists" class="section level2">
+<h2>Lists</h2>
+<p>Vectors, Matrices, and Arrays are all composed of elements that are the same data type (charcter, numerical, or logical).<br />
+Lists differ from these data structures because they can be comprised of elements of different data types. In fact, a list can be comprised of a group of lists.</p>
+<pre class="r"><code>li &lt;- list(TRUE, &quot;Hello&quot;, 28, &#39;8&#39;, 31.2, F)
+li</code></pre>
+<pre><code>## [[1]]
+## [1] TRUE
+## 
+## [[2]]
+## [1] &quot;Hello&quot;
+## 
+## [[3]]
+## [1] 28
+## 
+## [[4]]
+## [1] &quot;8&quot;
+## 
+## [[5]]
+## [1] 31.2
+## 
+## [[6]]
+## [1] FALSE</code></pre>
+<p>You’ll notice that when you ask R to print the list, it prints a little differently than a vector would.<br />
+You can use the <code>length</code> command to determine the number of elements in the list.</p>
+<pre class="r"><code>length(li)</code></pre>
+<pre><code>## [1] 6</code></pre>
+<div id="accessing-specific-elements-in-a-list-vector-matrix-or-array" class="section level3">
+<h3>Accessing specific elements in a list, vector, matrix, or array</h3>
+<p>What if you want to know what the 3rd element of a data structure is, but don’t want to print the entire data object (for example, a dataset I’m currently working with has over 500,000 participants - aka 500,000 ROWS of Data - Believe me, I don’t EVER want to print that!). RNA seq data can have far more entries than this.<br />
+We can use brackets to specify a specific element in data structure.</p>
+<pre class="r"><code>li[3]</code></pre>
+<pre><code>## [[1]]
+## [1] 28</code></pre>
+<p>Thinking back to our matrix from earlier, now we need to specify a 2 dimensional direction to a element. R stores this information in the form of (row,column) or in the case of an array (row, column, height).</p>
+<pre class="r"><code>mat[1,3] #This will specify the first row and third column of our matrix, &quot;mat&quot;</code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="r"><code>ArrayEx[2,3,3] #This will specify the 2nd row, third column of the 3rd matrix in our Array, &quot;ArrayEx&quot;</code></pre>
+<pre><code>## [1] 30</code></pre>
+<p>Brackets can be used in conjunction with other commands, such as <code>typeof</code>:</p>
+<pre class="r"><code>typeof(mat[2,4])</code></pre>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<p>Of course, since our matrix has to all be the same data type, we really only need to do this for 1 element. This is true for vectors and arrays as well.</p>
+<pre class="r"><code>typeof(ArrayEx[4,2,1])</code></pre>
+<pre><code>## [1] &quot;double&quot;</code></pre>
+<p>What is the type of the fourth object in our list, “li”?</p>
+<pre class="r"><code>typeof(li[4])</code></pre>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<p>Was this the result you expected?<br />
+R actually sees <code>li</code> as a collection of lists, each list containing only 1 object. So instead of returning “Character” (as we would expect), it returns “list”.<br />
+Try the following:</p>
+<pre class="r"><code>typeof(li[[4]])</code></pre>
+<p>Now do you get the result you expected the first time?<br />
+Essentially the double brackets <code>[[]]</code> is telling R to look at the object in the 4th list of li.<br />
+While this seems trivial in our very simple examples, knowing this information can be really helpful when you are working with data and a command does not do what you expect it to!</p>
+</div>
+</div>
+<div id="data-frames" class="section level2">
+<h2>Data Frames</h2>
+<p>This is probably the most used data structure in R. Especially if you are using R for statistical computing or making graphs. You can think of a data frame as a list of vectors of equal length, where each vector can be of a different data type. This is overly simplistic, but I think of data frames as an excel worksheet.</p>
+<p>You can create a data frame using the <code>data.frame</code> function:</p>
+<pre class="r"><code>animal &lt;- c(&quot;cat&quot;, &quot;zebra&quot;, &quot;turtle&quot;, &quot;chicken&quot;)
+legs &lt;- c(4,4,4,2)
+mammal &lt;- c(T,T,F,F)
+zoo &lt;- data.frame(animal, legs, mammal)
+zoo</code></pre>
+<pre><code>##    animal legs mammal
+## 1     cat    4   TRUE
+## 2   zebra    4   TRUE
+## 3  turtle    4  FALSE
+## 4 chicken    2  FALSE</code></pre>
+<p>You can add a column to a data frame by using the <code>$</code> after the name of the data frame and telling R what values to include.</p>
+<pre class="r"><code>zoo$canFly &lt;- c(F,F,F,T)
+zoo</code></pre>
+<pre><code>##    animal legs mammal canFly
+## 1     cat    4   TRUE  FALSE
+## 2   zebra    4   TRUE  FALSE
+## 3  turtle    4  FALSE  FALSE
+## 4 chicken    2  FALSE   TRUE</code></pre>
+<p>What if I want to add another row to my data frame? Let’s say I want to add information for a pig.<br />
+This can actually be done in 1 of two ways, both work equally well, it’s a matter of your personal choice as to which one you do.<br />
+Both ways require us to create a new list for our new row.</p>
+<pre class="r"><code>newanimal &lt;- c(&quot;pig&quot;,4,T,F)</code></pre>
+<p>Technique 1: Use <code>rbind</code> to add the row to the data frame.</p>
+<pre class="r"><code>zoo1 &lt;- rbind(zoo, newanimal)
+#rbind takes arguments of the original df and the list you want to add.
+zoo1</code></pre>
+<pre><code>##    animal legs mammal canFly
+## 1     cat    4   TRUE  FALSE
+## 2   zebra    4   TRUE  FALSE
+## 3  turtle    4  FALSE  FALSE
+## 4 chicken    2  FALSE   TRUE
+## 5     pig    4   TRUE  FALSE</code></pre>
+<p>Technique 2: Use the number of rows to add the row to your data frame. For this you use the <code>nrow</code> (number of row) command and add 1 to it to let R know you are adding a row.</p>
+<pre class="r"><code>zoo2 &lt;- zoo #replicate dataframe
+zoo2[nrow(zoo2)+1,] &lt;- newanimal # Tell R to add a new row to the data frame.
+zoo2</code></pre>
+<pre><code>##    animal legs mammal canFly
+## 1     cat    4   TRUE  FALSE
+## 2   zebra    4   TRUE  FALSE
+## 3  turtle    4  FALSE  FALSE
+## 4 chicken    2  FALSE   TRUE
+## 5     pig    4   TRUE  FALSE</code></pre>
+<p>We could have actually done this without replicating the data, but it is generally not a good idea to edit your original data in R. If this was a dataframe that we had already created from our original data (thus changing it would not affect the original data), we could have done this:</p>
+<pre class="r"><code>zoo[nrow(zoo)+1,] &lt;- newanimal
+zoo</code></pre>
+<pre><code>##    animal legs mammal canFly
+## 1     cat    4   TRUE  FALSE
+## 2   zebra    4   TRUE  FALSE
+## 3  turtle    4  FALSE  FALSE
+## 4 chicken    2  FALSE   TRUE
+## 5     pig    4   TRUE  FALSE</code></pre>
+<p>Notice how in this second technique, we are essentially using the brackets to specify a location in the dataframe. We are saying go to 1 past the current last row, and by putting nothing after the <code>,</code> we are saying we want to specify all columns in that row.</p>
+<p>We can also use this type of convention for examining the data, for example, if we want to see all the data for 1 specific row:</p>
+<pre class="r"><code>zoo[4,]</code></pre>
+<pre><code>##    animal legs mammal canFly
+## 4 chicken    2  FALSE   TRUE</code></pre>
+<div id="congratulations-you-have-completed-the-r-basics-section-of-this-course.-next-up-we-will-start-looking-at-a-dataset-and-using-r-markdown-instead-of-r-script." class="section level3">
+<h3>Congratulations! You have completed the R basics section of this course. Next up, we will start looking at a dataset and using R markdown instead of R script.</h3>
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

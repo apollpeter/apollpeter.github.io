@@ -8,13 +8,13 @@ navbar:
     - text: "Introduction"
       href: intro.html
     - text: "The Basics"
-      href: lesson1.Rmd
+      href: basics.html
     - text: "Working With Data"
-      href: data.Rmd
+      href: data.html
     - text: "Visualizing Data"
-      href: graphs.Rmd
+      href: graphs.html
     - text: "Resources"
-      href: resources.Rmd
+      href: resources.html
 output:
   html_document:
     theme: cerulean
