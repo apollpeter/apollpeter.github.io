@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="" />
+
+
+<title>intro.utf8</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R Basics Fall 2021</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="intro.html">Introduction</a>
+</li>
+<li>
+  <a href="basics.html">The Basics</a>
+</li>
+<li>
+  <a href="data.html">Working With Data</a>
+</li>
+<li>
+  <a href="graphs.html">Visualizing Data</a>
+</li>
+<li>
+  <a href="resources.html">Resources</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+
+</div>
+
+
+<div id="introduction-to-the-r-studio-environment" class="section level1">
+<h1>Introduction to the R Studio Environment</h1>
+<div id="meet-r-studio" class="section level3">
+<h3>Meet R Studio</h3>
+<p><img src="images/Rstudio.png" /> ### FYI: you may not have panel 1 at this point, and panel 2 will be taking up the entire left side of your screen. That’s OK. Once we get to opening a file, it’ll look like this!</p>
+</div>
+<div id="panel-1" class="section level3">
+<h3>Panel 1</h3>
+<p>This is where the bulk of your coding will be done.</p>
+</div>
+<div id="panel-2" class="section level3">
+<h3>Panel 2</h3>
+<p>4 tabs are present in this panel:<br />
+<strong>Console, Terminal, R Markdown, Jobs</strong><br />
+Most of the time, you’ll be in the <strong>Console</strong> tab.<br />
+The <strong>Terminal</strong> tab is basically your typical unix terminal (this can sometimes be useful for using git - we won’t be using it today).<br />
+<strong>R Markdown:</strong> I’ll touch on this later.<br />
+<strong>Jobs:</strong> Honestly, I’ve never used this tab - therefore, it’s beyond the scope of Basic R.</p>
+</div>
+<div id="panel-3-environmenthistory" class="section level3">
+<h3>Panel 3: Environment/History</h3>
+<p>I usually have this one set as Environment. As we assign variables, or create data frames and other R classes, they will show up in this list. Can be very useful. If you have a dataframe in this list, can click on it to view that dataframe (we’ll discuss this more later).</p>
+</div>
+<div id="panel-4-files-plots-and-help" class="section level3">
+<h3>Panel 4: Files, Plots, and Help</h3>
+<p>If the <strong>File</strong> tab is active, this will list all the files in your current working directory.<br />
+If you create a plot in a script, it will show up here in the <strong>Plots</strong> tab.<br />
+If the <strong>Packages</strong> tab is active, it will show all your available packages (we’ll discuss these in a mooment too).<br />
+If <strong>Help</strong> tab is active, it will show help topics.</p>
+</div>
+</div>
+<div id="file-types" class="section level1">
+<h1>File Types</h1>
+<div id="r-studio-supports-several-file-types." class="section level3">
+<h3>R Studio supports several file types.</h3>
+<p><img src="images/Filetypes.png" /></p>
+<p>We will mainly be using R markdown.<br />
+Another common file type is R script. This opens up a basic empty script file. I’ll try to touch on differences between these as we go on.</p>
+</div>
+<div id="why-i-use-r-markdown-instead-of-r-scripts" class="section level3">
+<h3>Why I use R Markdown instead of R scripts</h3>
+<ul>
+<li>I like the ability to convert it all to a PDF or Html document that can be sent to my PI to show them the progress on my work.</li>
+<li>I find the ability to split up my code into separate chunks (more on this later) to be very helpful in organizing my code. If I need to make a change, it is easy to just run that specific chunk than have to highlight it and everything below it.</li>
+<li>Honestly, I first learned R in R markdown!</li>
+<li>This website was created using R markdown.</li>
+</ul>
+</div>
+<div id="our-first-file" class="section level2">
+<h2>Our First File</h2>
+<div id="lets-create-our-first-r-file." class="section level4">
+<h4>Let’s create our first R file.</h4>
+<p>We are going to start this by creating a new project. I find it helpful to create my files within projects. I include each project in it’s own folder so it is easier to manage them.<br />
+* Having a separate folder for your project can become essential. A current data analysis research project I have been working on has over 5,000 files in it at the moment. That is just the files being used for the R programming in the project. I have about 30 different R markdown files (I tend to separate different parts of the analysis) plus numerous output files such as graphs that I use as figures.</p>
+</div>
+<div id="create-an-r-project" class="section level3">
+<h3>Create an R project</h3>
+<p>Go to <strong>File</strong> –&gt; <strong>New Project</strong><br />
+You should see the following window:<br />
+<img src="images/NewProject.png" /><br />
+Click on <strong>Existing Directory</strong> (second choice) This will open up a window where you can click <strong>Browse</strong> to navigate to a specific folder you would like to store your project in. I suggest having a folder for this workshop and within it create a folder titled R Project 1 or something similar.</p>
+<p>You will notice in the <strong>Files</strong> tab (bottom right), it will now show your Project name:<br />
+<img src="images/NewProject2.png" /></p>
+</div>
+<div id="now-lets-create-our-first-file" class="section level3">
+<h3>Now, let’s create our first file</h3>
+<ul>
+<li>For this first file, we will use an R script so you can get the feel of it versus the R markdown which we will use a little later.<br />
+</li>
+<li>Click on <strong>File</strong> –&gt; <strong>New File</strong><br />
+</li>
+<li>In the resulting list of Filetypes that we saw earlier, select <strong>R script</strong></li>
+<li>Your R environment should now look like this:<br />
+<img src="images/NewScript.png" /><br />
+With a blank file type in the upper left, the console in the lower left, an empty environment in the upper right, and the files tab in the lower left.</li>
+<li>Note, that there is no file listed for your new script. That’s because it is not yet saved! Let’s save it and name it something so that we don’t lose it if something happens.</li>
+<li>Saving files in R is pretty similar to saving them in any other windows application like Word, Excel, etc.</li>
+<li><strong>File</strong> –&gt; <strong>Save As</strong> The only difference is that if you have multiple files open and you have made changes in several of them, there is an option to click <strong>Save All</strong> and it will save all of the files that have new changes.</li>
+<li>Notice that there is now a file listed in your files tab in addition to your R project. The file should have the extension .R. This indicates it is an R script. You will see later that our R markdowns files will have .Rmd as an extension. <img src="images/NewScript2.png" /></li>
+</ul>
+</div>
+<div id="now-we-will-move-on-to-some-basic-r-commands-and-capabilities." class="section level3">
+<h3>Now we will move on to some basic R commands and capabilities.</h3>
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
