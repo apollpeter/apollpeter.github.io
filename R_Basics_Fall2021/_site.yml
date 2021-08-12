@@ -15,4 +15,6 @@ navbar:
       href: graphs.Rmd
     - text: "Resources"
       href: resources.Rmd
-      
+output:
+  html_document:
+    theme: cerulean
