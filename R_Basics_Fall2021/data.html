@@ -11,7 +11,7 @@
 
 
 
-<title>Working with Data</title>
+<title>data.utf8</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -329,16 +329,16 @@ div.tocify {
   <a href="intro.html">Introduction</a>
 </li>
 <li>
-  <a href="lesson1.Rmd">The Basics</a>
+  <a href="basics.html">The Basics</a>
 </li>
 <li>
-  <a href="data.Rmd">Working With Data</a>
+  <a href="data.html">Working With Data</a>
 </li>
 <li>
-  <a href="graphs.Rmd">Visualizing Data</a>
+  <a href="graphs.html">Visualizing Data</a>
 </li>
 <li>
-  <a href="resources.Rmd">Resources</a>
+  <a href="resources.html">Resources</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -352,13 +352,434 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Working with Data</h1>
 
 </div>
 
 
 <div id="working-with-data" class="section level1">
 <h1>Working With Data</h1>
+<div id="switching-to-r-markdown-files" class="section level2">
+<h2>Switching to R Markdown Files</h2>
+<p>we are now going to switch from working in an R script file to working in an R Markdown file.<br />
+Open a new markdown file using <code>File</code> -&gt; <code>New File</code> -&gt; <code>R Markdown</code><br />
+This will open up a dialogue box:<br />
+<img src="images/NewRMD.png" /><br />
+You can fill in a name for your file if you want (this doesn’t affect the name you save it as). For today, I suggest selecting HTML as the output type, Using PDF occaisionally takes downloading some other software but HTML will usually work. Then click OK.<br />
+You should now have a basic R Markdown file in panel 1.<br />
+It will contain some basic text. You can either hit return a few times and leave this information at the bottom of your file (for reference), or you can highlight and delete it.</p>
+<div id="however-you-do-need-to-leave-the-first-chunk-of-code-that-is-contained-in-the-r-markdown." class="section level4">
+<h4><strong>However You do need to leave the first chunk of code that is contained in the R markdown.</strong></h4>
+<p><img src="images/NewRmd2.png" /> I usually start by saving this new file. Currently, it is not saved. The name you put in the dialogue window when creating it just populates the first line of the file, so you will see that even if you named your file, the file name on the tab says “Untitled” and is red with an <code>*</code> next to it. The red color and the * means there are <strong>unsaved</strong> changes in that file. I never walk away from my computer without making sure that none of the files in my R project are red!<br />
+Go to <code>File</code> and select <code>Save As</code>.<br />
+Ideally, you will want to save this file in the same folder that your project is in. R will automatically be in the same directory as the project when you open <code>Save As</code>.</p>
+</div>
+<div id="working-in-r-markdown-files" class="section level4">
+<h4>Working in R Markdown Files</h4>
+<p>As I mentioned before, R Markdown is a little different than R scripts in that you create “Chunks” of code, so you can separate different sections of the code in your file. I find that R Markdown makes it easier for me to provide good documentation of what I did (A very important concept that could be it’s own class!).</p>
+<p><img src="images/TextVsCode.png" /></p>
+<p>So how do we tell R we want a code chunk?<br />
+The code chunk is indicated by the top line consisting of three ticks marks followed by {r} and the last line of the chunk consisting of three tick marks.<br />
+That’s kind of a lot to type every time you want a code chunk, isn’t it? Of course, there is a keyboard shortcut for it.<br />
+The keyboard shortcut to insert a code chunk is <code>ctrl</code> + <code>alt</code> + <code>i</code>.<br />
+Try this now.</p>
+</div>
+<div id="finding-keyboard-shortcuts" class="section level3">
+<h3>Finding Keyboard shortcuts</h3>
+<p>Inevitably, at some point you will be working in R and trying to remember how you insert a code chunk (for example, you’ll need to tell someone, but since you’ve done it so much by muscle memory, you can’t remember what your fingers actually do to insert it!). This is where the list of keyboard shortcuts comes in really handy!<br />
+Go to <code>Tools</code> then <code>Keyboard Shortcut Help</code>. Or use the keyboard shortcut <code>Alt</code> + <code>Shift</code> + <code>k</code> (if you can remember the shortcut!)<br />
+<img src="images/shortcuts.png" /><br />
+In the upper right of the shortcut help screen, you can click on “See all Shortcuts” - It will likely open up an html file in your internet browser that lists all the shortcuts for both Windows and Mac. You should be able to “print” this to a PDF for quick reference if you’d like. #### Press <code>esc</code> to exit the keyboard help screen.</p>
+<p>In some cases, especially if writing a report (or a website) you may want to include an output from some R code in your text section. You can do that using by inserting a tick mark, followed by <code>r</code> and then your command, and then another tick mark.<br />
+For example you could include the type of our matrix, “mat” by typing <em>r typeof(mat)</em> with tick marks around it in your text. You won’t see the output while you are typing, but when you “knit” your file (convert) it to html, you will see the output in the result. <strong>Let’s try this.</strong></p>
+<p>Even though <code>mat</code> still exists in our Environment, we didn’t create it in this file, so when we try to knit the file, it will produce an error because it tries to create the file using only what is in this file. So let’s insert a chunk and recreate that matrix:</p>
+<pre class="r"><code>mat &lt;- matrix(1:12, byrow=TRUE, nrow=3)</code></pre>
+<p><img src="images/matcode.png" /><br />
+<code>mat</code> is a matrix of type integer.</p>
+</div>
+</div>
+<div id="installing-packages" class="section level2">
+<h2>Installing Packages</h2>
+<p>If you remember back to why I like R, I mentioned that it is very versatile, and if there is something you want to do, there is probably a way to do it in R…</p>
+<p>The way R is able to do all these different functions is by using packages. Generally, I have my first chunk in my markdown file be adding in the packages that I need. The first package you will want to install is tidyverse. -You will only need to install the package once - in all future projects, you will just need to load the package (see below).</p>
+<pre class="r"><code>#Install Packages
+install.packages(&quot;tidyverse&quot;)</code></pre>
+<p>Once a package is installed, you’ll need to load the package into your R file. this is done using the <code>library</code> command. Tidyverse is a great package for working with data.</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## -- Attaching packages --------------------------------------- tidyverse 1.3.0 --</code></pre>
+<pre><code>## v ggplot2 3.3.3     v purrr   0.3.4
+## v tibble  3.1.0     v dplyr   1.0.5
+## v tidyr   1.1.3     v stringr 1.4.0
+## v readr   1.4.0     v forcats 0.5.1</code></pre>
+<pre><code>## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+</div>
+<div id="importing-data" class="section level2">
+<h2>Importing Data</h2>
+<p>We are actually going to be using a dataset that in included with R, however, typically, you will need to first import data into your R file (we don’t need to do this because we are using data included with R).<br />
+If your data is in a delimited file, there are basic commands to import it.<br />
+For a tab delimited file or txt file, you can use <code>read.table()</code>.<br />
+<code>read.table()</code> can be used with almost any type of data by adding an argument for the separator. It would look something like this.</p>
+<pre class="r"><code>dataname &lt;- read.table(filepath/filename.csv, sep = &#39;,&#39;)</code></pre>
+<p>Because the .csv is such a common file type, there is a command for it:</p>
+<pre class="r"><code>dataname &lt;- read.csv(filepath/filename.csv) #For data separated with a &#39;,&#39;
+dataname &lt;- read.csv2(filepath/filename.csv) #For data separated by a &#39;;&#39;</code></pre>
+<p>Keep in mind that when you import the data - your original data should always be treated as read.only. So once you start modifying it, rename it as a different dataframe. It is also very helpful to name it as something informative. You can do this using an underscore or a period followed by a descriptor: cars_woToyotas.</p>
+</div>
+<div id="working-with-data-1" class="section level2">
+<h2>Working with data</h2>
+<p>R has numerous data sets that come packaged with it for playing around with. To see a list of all the data sets that R comes with you can use the command <code>data()</code>. The two most commonly used in tutorials is <code>mtcars</code> and <code>iris</code>.</p>
+<p>To be different, we are going to look at a data set involving the location of earthquakes near fiji. Try typing this into the console section of R markdown.</p>
+<pre class="r"><code>?quakes</code></pre>
+<p>This will bring up the information in your <strong>Help</strong> pane about this dataset.<br />
+Let’s look at the data:</p>
+<pre class="r"><code>quakes</code></pre>
+<pre><code>##       lat   long depth mag stations
+## 1  -20.42 181.62   562 4.8       41
+## 2  -20.62 181.03   650 4.2       15
+## 3  -26.00 184.10    42 5.4       43
+## 4  -17.97 181.66   626 4.1       19
+## 5  -20.42 181.96   649 4.0       11
+## 6  -19.68 184.31   195 4.0       12
+## 7  -11.70 166.10    82 4.8       43
+## 8  -28.11 181.93   194 4.4       15
+## 9  -28.74 181.74   211 4.7       35
+## 10 -17.47 179.59   622 4.3       19</code></pre>
+<p>R has specifically made their datasets smaller to be worked with easier. Often times with your own data, you are not going to want to open the whole dataset at once. R uses similar commands as other languages such as Unix and Python, like <code>head</code> and <code>tail</code>.</p>
+<pre class="r"><code>head(quakes)</code></pre>
+<pre><code>##      lat   long depth mag stations
+## 1 -20.42 181.62   562 4.8       41
+## 2 -20.62 181.03   650 4.2       15
+## 3 -26.00 184.10    42 5.4       43
+## 4 -17.97 181.66   626 4.1       19
+## 5 -20.42 181.96   649 4.0       11
+## 6 -19.68 184.31   195 4.0       12</code></pre>
+<pre class="r"><code>tail(quakes)</code></pre>
+<pre><code>##         lat   long depth mag stations
+## 995  -17.70 188.10    45 4.2       10
+## 996  -25.93 179.54   470 4.4       22
+## 997  -12.28 167.06   248 4.7       35
+## 998  -20.13 184.20   244 4.5       34
+## 999  -17.40 187.80    40 4.5       14
+## 1000 -21.59 170.56   165 6.0      119</code></pre>
+<p>The default number of lines shown by R is 6 lines, but you can include an argument to tell it how many lines you want it to show.</p>
+<pre class="r"><code>head(quakes, n=10)</code></pre>
+<pre><code>##       lat   long depth mag stations
+## 1  -20.42 181.62   562 4.8       41
+## 2  -20.62 181.03   650 4.2       15
+## 3  -26.00 184.10    42 5.4       43
+## 4  -17.97 181.66   626 4.1       19
+## 5  -20.42 181.96   649 4.0       11
+## 6  -19.68 184.31   195 4.0       12
+## 7  -11.70 166.10    82 4.8       43
+## 8  -28.11 181.93   194 4.4       15
+## 9  -28.74 181.74   211 4.7       35
+## 10 -17.47 179.59   622 4.3       19</code></pre>
+<p>Another useful command to get a glimpse of the data is the <code>summary</code> command:</p>
+<pre class="r"><code>summary(quakes)</code></pre>
+<pre><code>##       lat              long           depth            mag      
+##  Min.   :-38.59   Min.   :165.7   Min.   : 40.0   Min.   :4.00  
+##  1st Qu.:-23.47   1st Qu.:179.6   1st Qu.: 99.0   1st Qu.:4.30  
+##  Median :-20.30   Median :181.4   Median :247.0   Median :4.60  
+##  Mean   :-20.64   Mean   :179.5   Mean   :311.4   Mean   :4.62  
+##  3rd Qu.:-17.64   3rd Qu.:183.2   3rd Qu.:543.0   3rd Qu.:4.90  
+##  Max.   :-10.72   Max.   :188.1   Max.   :680.0   Max.   :6.40  
+##     stations     
+##  Min.   : 10.00  
+##  1st Qu.: 18.00  
+##  Median : 27.00  
+##  Mean   : 33.42  
+##  3rd Qu.: 42.00  
+##  Max.   :132.00</code></pre>
+<p>Lets learn some more about our data: How many rows does our data have?</p>
+<pre class="r"><code>nrow(quakes)</code></pre>
+<p>How many columns does the data have?</p>
+<pre class="r"><code>ncol(quakes)</code></pre>
+<p>We can also learn these numbers using the <code>dim</code> command:</p>
+<pre class="r"><code>dim(quakes)</code></pre>
+<pre><code>## [1] 1000    5</code></pre>
+<div id="lets-practice" class="section level3 tabset">
+<h3>Let’s Practice</h3>
+<p>Let’s practice some of our commands we learn in the R basics.</p>
+<div id="exercises" class="section level4">
+<h4>Exercises</h4>
+<ol style="list-style-type: decimal">
+<li>What information is in the 3rd column of the 296th row?<br />
+</li>
+<li>Print the entirety of the 15th row.</li>
+</ol>
+</div>
+<div id="answers" class="section level4">
+<h4>Answers</h4>
+<ol style="list-style-type: decimal">
+<li>What information is in the 3rd column of the 29th row? Use brackets to specify the cell that you are interested in.</li>
+</ol>
+<pre class="r"><code>quakes[29,3]</code></pre>
+<pre><code>## [1] 582</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Print the entirety of the 15th row. Use the brackets again but leave the column part blank.</li>
+</ol>
+<pre class="r"><code>quakes[15,]</code></pre>
+<pre><code>##      lat   long depth mag stations
+## 15 -20.7 169.92   139 6.1       94</code></pre>
+</div>
+</div>
+<div id="subsetting-data" class="section level3">
+<h3>Subsetting Data</h3>
+<p>Now that we know a little about this data. What does the information tell us.<br />
+You can choose to subset your data to only look at a specific section of it. Let’s say we want to only look at earthquakes that occurred at a depth greater than 200 (km).<br />
+we can do this using a command from the tidyverse package: <code>filter</code>.<br />
+<code>filter</code>takes the arguments of the data to subset and an argument of the values you are interested in.</p>
+<pre class="r"><code>quake_200 &lt;- filter(quakes, depth &gt; 200)
+dim(quake_200)</code></pre>
+<pre><code>## [1] 582   5</code></pre>
+<p>We can check that this command worked using the <code>summary</code> command.</p>
+<pre class="r"><code>summary(quake_200)</code></pre>
+<pre><code>##       lat              long           depth            mag       
+##  Min.   :-37.37   Min.   :166.3   Min.   :201.0   Min.   :4.000  
+##  1st Qu.:-22.68   1st Qu.:180.1   1st Qu.:329.5   1st Qu.:4.200  
+##  Median :-20.21   Median :181.2   Median :524.0   Median :4.500  
+##  Mean   :-20.50   Mean   :180.1   Mean   :466.3   Mean   :4.537  
+##  3rd Qu.:-17.98   3rd Qu.:182.0   3rd Qu.:583.0   3rd Qu.:4.700  
+##  Max.   :-10.98   Max.   :185.5   Max.   :680.0   Max.   :6.000  
+##     stations     
+##  Min.   : 10.00  
+##  1st Qu.: 17.00  
+##  Median : 25.00  
+##  Mean   : 31.82  
+##  3rd Qu.: 39.00  
+##  Max.   :132.00</code></pre>
+<p>Looking at the minimum in the depth column shows us that this dataset no longer contains depths below 200.</p>
+<p>We can also choose which columns of data we keep with the <code>select</code>. Let’s say we only interested in the latitude and longitude coordinates of the quakes.<br />
+<code>select</code> takes the argument of the data to subset, and the columns to keep.</p>
+<pre class="r"><code>quake_coord &lt;- select(quakes, lat:long)
+head(quake_coord)</code></pre>
+<pre><code>##      lat   long
+## 1 -20.42 181.62
+## 2 -20.62 181.03
+## 3 -26.00 184.10
+## 4 -17.97 181.66
+## 5 -20.42 181.96
+## 6 -19.68 184.31</code></pre>
+<p>As you can see, this new dataset only contains the columns of “lat”, and “long”.</p>
+<p>This works well if you have a fairly small dataset, or if you only want to keep a few columns. But what if you want to keep a majority of the columns. <code>Select</code> also works to remove columns by adding a <code>-</code>sign before the columns you want to remove.</p>
+<pre class="r"><code>quake_noCoor &lt;- select(quakes, -lat, -long)
+head(quake_noCoor)</code></pre>
+<pre><code>##   depth mag stations
+## 1   562 4.8       41
+## 2   650 4.2       15
+## 3    42 5.4       43
+## 4   626 4.1       19
+## 5   649 4.0       11
+## 6   195 4.0       12</code></pre>
+<p>You can even choose columns based on containing a specific character in the column name.</p>
+<pre class="r"><code>quake_2 &lt;- select(quakes, contains(&quot;a&quot;))
+head(quake_2)</code></pre>
+<pre><code>##      lat mag stations
+## 1 -20.42 4.8       41
+## 2 -20.62 4.2       15
+## 3 -26.00 5.4       43
+## 4 -17.97 4.1       19
+## 5 -20.42 4.0       11
+## 6 -19.68 4.0       12</code></pre>
+<p>This selected only columns that contained an “a” in the name.</p>
+<p>You can also use column numbers with the <code>select</code> command:</p>
+<pre class="r"><code>quake_3 &lt;- select(quakes, 3:5)
+head(quake_3)</code></pre>
+<pre><code>##   depth mag stations
+## 1   562 4.8       41
+## 2   650 4.2       15
+## 3    42 5.4       43
+## 4   626 4.1       19
+## 5   649 4.0       11
+## 6   195 4.0       12</code></pre>
+<p>Both <code>filter</code> and <code>select</code> can be used with more than one argument by using boolean operators: <code>&amp;</code> (and), <code>|</code>(or), and <code>!</code> (not).</p>
+<pre class="r"><code>quake_4 &lt;- filter(quakes, depth &gt; 200 &amp; mag &gt;4)
+head(quake_4)</code></pre>
+<pre><code>##      lat   long depth mag stations
+## 1 -20.42 181.62   562 4.8       41
+## 2 -20.62 181.03   650 4.2       15
+## 3 -17.97 181.66   626 4.1       19
+## 4 -28.74 181.74   211 4.7       35
+## 5 -17.47 179.59   622 4.3       19
+## 6 -21.44 180.69   583 4.4       13</code></pre>
+<p>It is likely that you are going to want to do multiple actions on your data. You can combine multiple functions, however this can get complicated and it can be easy to misplace a parenthesis or comma somewhere along the way.<br />
+This is where the ‘pipe’ comes in. It functions the same as it does in Unix, however it looks a little different. <code>%&gt;%</code> You can type the three characters, or get used to using the keyboard shortcut: <code>ctrl</code>+<code>shift</code>+<code>m</code>.</p>
+<pre class="r"><code>filter(quakes, mag==4.0) %&gt;% 
+  select(lat:long) %&gt;% 
+  head()</code></pre>
+<pre><code>##      lat   long
+## 1 -20.42 181.96
+## 2 -19.68 184.31
+## 3 -17.94 181.49
+## 4 -23.55 180.80
+## 5 -19.26 184.42
+## 6 -22.06 180.60</code></pre>
+<p>Not only are we less likely to make a mistake in the syntax with this, it is also much easier to read and proof.</p>
+</div>
+<div id="arranging-data" class="section level3 tabset">
+<h3>Arranging data</h3>
+<p>If you’ve used excel for any type of data analysis, you have probably used the sort feature to organize the data alphabetically or numerically by a specific feature. In unix, this is the <code>sort</code> command, in R, this command is <code>arrange</code>.</p>
+<p>Pull up the help topic on <code>arrange</code>. How would we use it to organize the data in order of the number of stations reporting the earthquakes?</p>
+<div id="section" class="section level4">
+<h4></h4>
+<p>What is the largest number of stations that reported a quake?</p>
+</div>
+<div id="answer" class="section level4">
+<h4>Answer</h4>
+<p>What is the largest number of stations that reported a quake?<br />
+Here I have wrapped the <code>arrange</code> command in the <code>head</code> command to minimize the amount of output. While in R studio it only prints a portion and says there are a number of remaining lines, in the html output, it would print all 1000!</p>
+<pre class="r"><code>head(arrange(quakes, stations))</code></pre>
+<pre><code>##      lat   long depth mag stations
+## 1 -21.00 181.66   600 4.4       10
+## 2 -23.55 180.80   349 4.0       10
+## 3 -16.30 186.00    48 4.5       10
+## 4 -20.10 184.40   186 4.2       10
+## 5 -15.03 182.29   399 4.1       10
+## 6 -19.06 169.01   158 4.4       10</code></pre>
+<pre class="r"><code>tail(arrange(quakes, stations))</code></pre>
+<pre><code>##         lat   long depth mag stations
+## 995  -21.59 170.56   165 6.0      119
+## 996  -20.25 184.75   107 5.6      121
+## 997  -15.56 167.62   127 6.4      122
+## 998  -15.33 186.75    48 5.7      123
+## 999  -18.82 182.21   417 5.6      129
+## 1000 -12.23 167.02   242 6.0      132</code></pre>
+</div>
+</div>
+</div>
+<div id="summary-statistics" class="section level2">
+<h2>Summary Statistics</h2>
+<p>we already saw that <code>summary</code> will give us the mean of each column, but what if we are really only interested in the mean depth of the quakes? we can get summary statistics on each of the columns:</p>
+<pre class="r"><code>mean(quakes$depth)</code></pre>
+<pre><code>## [1] 311.371</code></pre>
+<p>It is also possible to get the means of all the columns, but not all the other information in the summary tables:</p>
+<pre class="r"><code>colMeans(quakes) #Make sure you capitalize the &quot;M&quot; in means</code></pre>
+<pre><code>##       lat      long     depth       mag  stations 
+## -20.64275 179.46202 311.37100   4.62040  33.41800</code></pre>
+<p>Here are some other summary statistics you can compute:<br />
+<code>sd</code>: Standard Deviation<br />
+<code>var</code>: Variance (sd^2)<br />
+-Note that both <code>sd</code> and <code>var</code> use n-1 as the denominator (The unbiased form of the sd for a normal distribution).</p>
+<div id="adding-new-variables" class="section level3 tabset">
+<h3>Adding new variables</h3>
+<p>The <code>mutate</code> function lets us add new variables to a data object by specifying a formula. For instance, let’s say we want to create a column that shows the difference between the magnitude of an individual earthquake and the mean of the magnitudes.</p>
+<pre class="r"><code># mutate takes the arguments of 1: The data we are working with, 2: The name of the new column, 3: The formula to get the new column.
+quakes_diff &lt;- mutate(quakes, DiffMean = mean(mag)-mag)
+head(quakes_diff)</code></pre>
+<pre><code>##      lat   long depth mag stations DiffMean
+## 1 -20.42 181.62   562 4.8       41  -0.1796
+## 2 -20.62 181.03   650 4.2       15   0.4204
+## 3 -26.00 184.10    42 5.4       43  -0.7796
+## 4 -17.97 181.66   626 4.1       19   0.5204
+## 5 -20.42 181.96   649 4.0       11   0.6204
+## 6 -19.68 184.31   195 4.0       12   0.6204</code></pre>
+<p>Note that R will always add this new column at the far right side of the data frame. If you want to reorder the columns, you can use the <code>select</code> function and list the columns in the order you want them in.</p>
+<pre class="r"><code>quakes_diff &lt;- select(quakes_diff, 1:4,6,5)
+head(quakes_diff)</code></pre>
+<pre><code>##      lat   long depth mag DiffMean stations
+## 1 -20.42 181.62   562 4.8  -0.1796       41
+## 2 -20.62 181.03   650 4.2   0.4204       15
+## 3 -26.00 184.10    42 5.4  -0.7796       43
+## 4 -17.97 181.66   626 4.1   0.5204       19
+## 5 -20.42 181.96   649 4.0   0.6204       11
+## 6 -19.68 184.31   195 4.0   0.6204       12</code></pre>
+<p>What if we want to pare down the choices we have for depths. We want to classify each quake as occuring in a 100 meter range of depths? We can do this using a <code>mutate</code> to create a new column. We will also need another new command: <code>ifelse</code> - an if/then statement.</p>
+<p><code>ifelse</code> requires 3 arguments: 1) The condition to be tested - this needs to be a condition that can be answered as True or False, A DO step if the condition is TRUE and a DO step if the condition is False.</p>
+<p>For this particular grouping, we are going to need several nested ifelse statements - which leads to a whole lot of parenthesis. As you type in the ifelse statements, everytime you place a left parenthesis, R will automatically print a right parenthesis, this can be very helpful in these types of functions. What you end up with is the code below.</p>
+<pre class="r"><code>quakes_diff1 &lt;- mutate(quakes_diff, DepthCat = ifelse(depth &gt; 0 &amp; depth &lt;=100, 100,ifelse(depth &gt;100 &amp; depth&lt;=200,200,ifelse(depth&gt;200 &amp; depth&lt;=300, 300,ifelse(depth&gt;300 &amp; depth&lt;=400,400,ifelse(depth&gt;400 &amp; depth&lt;=500,500,ifelse(depth&gt;500 &amp; depth&lt;=600,600,700)))))))
+head(quakes_diff1)</code></pre>
+<pre><code>##      lat   long depth mag DiffMean stations DepthCat
+## 1 -20.42 181.62   562 4.8  -0.1796       41      600
+## 2 -20.62 181.03   650 4.2   0.4204       15      700
+## 3 -26.00 184.10    42 5.4  -0.7796       43      100
+## 4 -17.97 181.66   626 4.1   0.5204       19      700
+## 5 -20.42 181.96   649 4.0   0.6204       11      700
+## 6 -19.68 184.31   195 4.0   0.6204       12      200</code></pre>
+<div id="section-1" class="section level4">
+<h4></h4>
+<p>What if I had used the <code>%&gt;%</code> pipe command instead of an assignment operator. My code would have looked like this instead:</p>
+<pre class="r"><code>quakes_diff %&gt;% mutate(DepthCat = ifelse(depth &gt; 0 &amp; depth &lt;=100, 100,ifelse(depth &gt;100 &amp; depth&lt;=200,200,ifelse(depth&gt;200 &amp; depth&lt;=300, 300,ifelse(depth&gt;300 &amp; depth&lt;=400,400,ifelse(depth&gt;400 &amp; depth&lt;=500,500,ifelse(depth&gt;500 &amp; depth&lt;=600,600,700)))))))
+head(quakes_diff)</code></pre>
+<p>Would this have worked?</p>
+</div>
+<div id="answer-1" class="section level4">
+<h4>Answer</h4>
+<p>What if I had used the <code>%&gt;%</code> pipe command instead of an assignment operator. My code would have looked like this instead:</p>
+<pre class="r"><code>quakes_diff %&gt;% mutate(DepthCat = ifelse(depth &gt; 0 &amp; depth &lt;=100, 100,ifelse(depth &gt;100 &amp; depth&lt;=200,200,ifelse(depth&gt;200 &amp; depth&lt;=300, 300,ifelse(depth&gt;300 &amp; depth&lt;=400,400,ifelse(depth&gt;400 &amp; depth&lt;=500,500,ifelse(depth&gt;500 &amp; depth&lt;=600,600,700)))))))
+head(quakes_diff)</code></pre>
+<p>Would this have worked?</p>
+<p>A hint: This code actually produces two separate outputs. One output has dimensions of 1000 rows by 7 columns, the other looks like this:</p>
+<pre><code>##      lat   long depth mag DiffMean stations
+## 1 -20.42 181.62   562 4.8  -0.1796       41
+## 2 -20.62 181.03   650 4.2   0.4204       15
+## 3 -26.00 184.10    42 5.4  -0.7796       43
+## 4 -17.97 181.66   626 4.1   0.5204       19
+## 5 -20.42 181.96   649 4.0   0.6204       11
+## 6 -19.68 184.31   195 4.0   0.6204       12</code></pre>
+<p>What did this code do that was different than our original code?</p>
+</div>
+</div>
+<div id="grouping-and-summarise" class="section level3 tabset">
+<h3>Grouping and Summarise</h3>
+<p>Now that we have our depth data categorized into 7 categories, what if we want to know some general statistics about the quakes that occurred in each depth category? For instance - let’s say we want to know the mean magnitude for quakes at each depth category. We could use <code>filter</code> piped to <code>mean</code>.</p>
+<pre class="r"><code>filter(quakes_diff1, DepthCat == 100)$mag %&gt;% mean()</code></pre>
+<pre><code>## [1] 4.786719</code></pre>
+<p>This would work, but we’d have to repeat the same code for every depth category. And that’s kind of annoying! In addition, with large datasets, you may not know all the levels of the variables you are looking at. The <code>group_by</code> and <code>summarise</code> commands from tidyverse alleviate this issue. These commands allow you to specify the variables you want to group by with the <code>group_by</code> command (in our case, DepthCat) and then use <code>summarise</code> to get some summary statistics.</p>
+<p>So if we want to know the mean magnituge of the earthquakes at each depth category, we can use the following code:</p>
+<pre class="r"><code>quakes_diff1 %&gt;% 
+  group_by(DepthCat) %&gt;% 
+  summarise(meanMag = mean(mag))</code></pre>
+<pre><code>## # A tibble: 7 x 2
+##   DepthCat meanMag
+##      &lt;dbl&gt;   &lt;dbl&gt;
+## 1      100    4.79
+## 2      200    4.66
+## 3      300    4.57
+## 4      400    4.41
+## 5      500    4.52
+## 6      600    4.55
+## 7      700    4.55</code></pre>
+<div id="lets-practice-1" class="section level4">
+<h4>Let’s Practice</h4>
+<p>Can you write code to determine the mean number of stations that reported quakes for each depth category?</p>
+<p>If we didn’t create a depth category, how many different depths are represented in the table? Write code to determine the mean magnitude of earthquakes at each of these different depths.</p>
+</div>
+<div id="answers-1" class="section level4">
+<h4>Answers</h4>
+<p>Can you write code to determine the mean number of stations that reported quakes for each depth category?</p>
+<pre class="r"><code>quakes_diff1 %&gt;% 
+  group_by(DepthCat) %&gt;% 
+  summarise(meanMag = mean(stations))</code></pre>
+<pre><code>## # A tibble: 7 x 2
+##   DepthCat meanMag
+##      &lt;dbl&gt;   &lt;dbl&gt;
+## 1      100    37  
+## 2      200    33.5
+## 3      300    32.3
+## 4      400    24.8
+## 5      500    32.0
+## 6      600    32.5
+## 7      700    33.5</code></pre>
+<p>If we didn’t create a depth category, how many different depths are represented in the table? Write code to determine the mean magnitude of earthquakes at each of these different depths.</p>
+<pre class="r"><code>depths &lt;- quakes_diff1 %&gt;% 
+  group_by(depth) %&gt;% 
+  summarise(meanMag = mean(mag))
+dim(depths)</code></pre>
+<pre><code>## [1] 422   2</code></pre>
+<pre class="r"><code>head(depths)</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##   depth meanMag
+##   &lt;int&gt;   &lt;dbl&gt;
+## 1    40    4.92
+## 2    41    4.88
+## 3    42    4.9 
+## 4    43    4.94
+## 5    44    4.9 
+## 6    45    4.61</code></pre>
+</div>
+</div>
+</div>
 </div>
 
 
@@ -407,7 +828,7 @@ $(document).ready(function ()  {
 
     // establish options
     var options = {
-      selectors: "h1,h2",
+      selectors: "h1,h2,h3",
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {

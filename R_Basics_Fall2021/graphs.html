@@ -11,7 +11,7 @@
 
 
 
-<title>Visualizing Data</title>
+<title>graphs.utf8</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -329,16 +329,16 @@ div.tocify {
   <a href="intro.html">Introduction</a>
 </li>
 <li>
-  <a href="lesson1.Rmd">The Basics</a>
+  <a href="basics.html">The Basics</a>
 </li>
 <li>
-  <a href="data.Rmd">Working With Data</a>
+  <a href="data.html">Working With Data</a>
 </li>
 <li>
-  <a href="graphs.Rmd">Visualizing Data</a>
+  <a href="graphs.html">Visualizing Data</a>
 </li>
 <li>
-  <a href="resources.Rmd">Resources</a>
+  <a href="resources.html">Resources</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -352,13 +352,204 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Visualizing Data</h1>
 
 </div>
 
 
 <div id="visualizing-our-data" class="section level1">
 <h1>Visualizing Our Data</h1>
+<pre class="r"><code># Loading Packages
+library(tidyverse, quietly=TRUE)
+library(ggplot2)
+library(RColorBrewer)</code></pre>
+</div>
+<div id="visualizing-our-data-1" class="section level1">
+<h1>Visualizing Our Data</h1>
+<p>Base R does allow some very basic visualizations of plotting data. It can be great if you just need to do a quick check to see the relationship between two variables or the general distribution of your data.</p>
+<p>But, if you want to make graphs to really show the results of your data (for presentations or publiscations), you DON’T want to use base R. You will want to use the package <code>ggplot2</code>.</p>
+<div id="what-is-ggplot" class="section level2">
+<h2>What is ggplot?</h2>
+<p>Hadley Wickham, the chief scientist at RStudio (and ISU Alum!), said in A Layered Grammar of Graphics:<br />
+<em>A <strong>grammar</strong> of <strong>graphics</strong> is a tool that enables us to concisely describe the components of a graphic.</em><br />
+Th <code>ggplot2</code> package is based on the concept of “building up a graphic from multiple layers of data.” In other words, we are building our plot from individual pieces (called layers) one function call at a time.</p>
+</div>
+<div id="use-cheat-sheets" class="section level2">
+<h2>Use Cheat Sheets!</h2>
+<p><code>ggplot2</code> is not exactly an intuitive platform to get the plot you want, but once you figure it out, you can make some pretty neat plots with it.<br />
+There are several cheat sheets available that can be lifesavers in getting the ggplot coded. Links to these cheat sheets are in the Resources tab. <strong>USE THEM</strong>! If you plan to use <code>ggplot2</code> for your graphs, I would print these out, laminate them and hang them on a wall by your computer!</p>
+</div>
+<div id="basic-setup" class="section level2">
+<h2>Basic setup</h2>
+<p>The basic setup code chunk for a ggplot graph is:</p>
+<pre class="r"><code>ggplot(data, mapping = aes(x=__, y=__, ...)) + 
+  &lt;geom_layers&gt; + 
+  &lt;additional layers&gt;</code></pre>
+<p>-Each line is representing a layer. -You must start with the initial ggplot call <code>ggplot(data,mapping = aes(x=  , y=  , ...))</code> -<code>data</code> is the data object that you want to visualize. -mapping refers to the aesthetic mappings to use (what aesthetics to which variable) -<code>geom-layer</code> refers to essentially the type of graph/plot you want (We’ll discuss this more later) -<code>additional layers</code>: there are many additional layers to customize every aspect of your graph. - The order that the layers are listed in sometimes does matter. I have yet to find a hard and fast guide, but if you feel like your graph is close, but not quite what you want, try moving layers around. -Each line ends with a <code>+</code> so ggplot knows you are adding an additional layer.</p>
+</div>
+<div id="geom-layers" class="section level2">
+<h2>Geom Layers</h2>
+<p>There are several different types of graphs that ggplot can make. - I will use our earthquake data to exhibit some of these different layers. - For these examples, I have intentionally tried to make the graph as basic as possible. The code used for them is the bare minimum of what you need to make the graph. We will then work on building up our graph from there later on.</p>
+<div id="one-variable---discrete-data" class="section level3">
+<h3>One Variable - Discrete Data</h3>
+<ul>
+<li><h4 id="bar-plot">Bar Plot</h4></li>
+</ul>
+<pre class="r"><code>ggplot(quakes_diff1, mapping=aes(x=DepthCat))+
+  geom_bar()</code></pre>
+<p><img src="graphs_files/figure-html/unnamed-chunk-4-1.png" width="672" /> ### One Variable - Continuous Data</p>
+<div id="histogram" class="section level4">
+<h4>Histogram</h4>
+<pre class="r"><code>ggplot(quakes_diff1, mapping=aes(x=depth))+
+  geom_histogram(binwidth=10)</code></pre>
+<p><img src="graphs_files/figure-html/unnamed-chunk-5-1.png" width="672" /> #### Density graph</p>
+<pre class="r"><code>ggplot(quakes_diff1, mapping=aes(x=depth))+
+  geom_density()</code></pre>
+<p><img src="graphs_files/figure-html/unnamed-chunk-6-1.png" width="672" /> #### Dotplot</p>
+<pre class="r"><code>ggplot(quakes_diff1, mapping=aes(x=depth))+
+  geom_dotplot(binwidth=10)</code></pre>
+<p><img src="graphs_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+</div>
+<div id="variables-both-continuous-data" class="section level3">
+<h3>2 Variables: Both Continuous Data</h3>
+<div id="scatter-plots" class="section level4">
+<h4>Scatter Plots</h4>
+<pre class="r"><code>ggplot(quakes_diff1, mapping=aes(x=depth, y=mag))+
+  geom_point()</code></pre>
+<p><img src="graphs_files/figure-html/unnamed-chunk-8-1.png" width="672" /> In the plot above - you can see that there appear to be many dots that are plotted on top of each other - referred to as <strong>overplotting</strong>. A way to avoid this is to add some horizontal “noise” into the graph so. This is done using the <code>geom_jitter</code> function.</p>
+<pre class="r"><code>ggplot(quakes_diff1, mapping=aes(x=depth, y=mag))+
+  geom_jitter()</code></pre>
+<p><img src="graphs_files/figure-html/unnamed-chunk-9-1.png" width="672" /> #### line graph</p>
+<pre class="r"><code>ggplot(quakes_diff1, mapping=aes(x=depth, y=mag))+
+  geom_smooth()</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<p><img src="graphs_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>The geoms do not have to be used independently. They can be combined. Here is an example where I combined the scatter plot with the line plot.</p>
+<pre class="r"><code>ggplot(quakes_diff1, mapping=aes(x=depth, y=mag))+
+  geom_point(position=&quot;jitter&quot;)+
+  geom_smooth()</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<p><img src="graphs_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+</div>
+<div id="variables---discrete-x-and-continuous-y" class="section level3">
+<h3>2 Variables - Discrete X and Continuous Y</h3>
+<p>-Often times for these graphs, you need to summarise data into a summary table first. We will use the summarise function from our data work to create a summary table</p>
+<pre class="r"><code>quakeSumm &lt;- quakes_diff1 %&gt;% 
+  group_by(DepthCat) %&gt;% 
+  summarise(meanMag = mean(mag),
+            sdMag = sd(mag),
+            meanStation = mean(stations),
+            sdStation = sd(stations),
+            meanDiff = mean(DiffMean),
+            sdDiff = sd(DiffMean))
+quakeSumm</code></pre>
+<pre><code>## # A tibble: 7 x 7
+##   DepthCat meanMag sdMag meanStation sdStation meanDiff sdDiff
+##      &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;
+## 1      100    4.79 0.379        37        22.3  -0.166   0.379
+## 2      200    4.66 0.430        33.5      23.8  -0.0352  0.430
+## 3      300    4.57 0.383        32.3      20.5   0.0504  0.383
+## 4      400    4.41 0.337        24.8      14.4   0.211   0.337
+## 5      500    4.52 0.377        32.0      23.0   0.101   0.377
+## 6      600    4.55 0.386        32.5      21.2   0.0693  0.386
+## 7      700    4.55 0.388        33.5      22.5   0.0726  0.388</code></pre>
+<div id="column-graphbar-graph" class="section level4">
+<h4>Column graph/Bar graph</h4>
+<pre class="r"><code>ggplot(quakeSumm, mapping=aes(x=DepthCat, y=meanMag))+
+  geom_col()</code></pre>
+<p><img src="graphs_files/figure-html/unnamed-chunk-13-1.png" width="672" /> #### Violen Plots</p>
+<pre class="r"><code>ggplot(quakeSumm, mapping=aes(x=DepthCat, y=meanMag))+
+  geom_violin()</code></pre>
+<p><img src="graphs_files/figure-html/unnamed-chunk-14-1.png" width="672" /> ## Additional Layers So now that you have seen just a sampling of the variety of plots you can make with <code>ggplot2</code>. What are some of the additional layers you might want to add.</p>
+</div>
+</div>
+<div id="color" class="section level3">
+<h3>Color</h3>
+<p>Black and white plots are kind of boring. What if you want to add some color to your plot. Let’s add some color to our column/bar graph:<br />
+To add color, you need to use a commmand for <code>fill</code> - this tells your plot what you want the color to be based on. This can be great if say we had two different areas of earthquake data and wanted to compare them, we could have 1 color be for the area around fiji and another for the area around Japan.</p>
+<pre class="r"><code>ggplot(quakeSumm, mapping=aes(x=DepthCat, y=meanMag, fill=DepthCat))+
+  geom_col()</code></pre>
+<p><img src="graphs_files/figure-html/unnamed-chunk-15-1.png" width="672" /> You notice here that I didn’t specify a color - R just used it’s default color, in this case a gradient as the depth got deeper.<br />
+For a continuous variable, where you want a gradient, the <code>RColorBrewer</code> package and the <code>Vridis</code> package give a lot of options.</p>
+<p>What if I just wanted them all to be one color? I could specify that in the arguments for geom_col, by putting an argument for <code>fill</code>. An argument for <code>color</code> would change the color of the line around each column. R can take Hex codes for colors (in the form of #RRBBGG, for example #FF0000 is red) and it has numerous pre-defined colors. -The hex codes can be found on the web - I like this <a href="https://www.rapidtables.com/web/color/html-color-codes.html">website</a> (they can be found in several places). - For the R predefined colors, I usually use this <a href="https://www.nceas.ucsb.edu/sites/default/files/2020-04/colorPaletteCheatsheet.pdf">website</a>. - For discrete data, for instance, if you had records for the day of the week that earthquakes were recorded, you could specify the specific color for each day of the week using the command `scale_fill_manual(values=c(“red”, “blue”, “orange”, “Skyblue”, “green”, “purple”, “yellow”)) -Our earthquake data is considered continuous so it doesn’t work with this command, but you will see some examples of it later in the tutorial.</p>
+<pre class="r"><code>ggplot(quakeSumm, mapping=aes(x=DepthCat, y=meanMag))+
+  geom_col(fill=&quot;blue&quot;)</code></pre>
+<p><img src="graphs_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(quakeSumm, mapping=aes(x=DepthCat, y=meanMag))+
+  geom_col(fill=&quot;#3FBC81&quot;)</code></pre>
+<p><img src="graphs_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+</div>
+<div id="labels" class="section level3">
+<h3>Labels</h3>
+<p>Any good graph is going to need proper labels. This is added with a layer titled “labs”, in it you can specify a title, a subtitle, the x-axis, the y-axis, the legend (referred to by the “fill”)</p>
+<pre class="r"><code>ggplot(quakeSumm, mapping=aes(x=DepthCat, y=meanMag, fill=DepthCat))+
+  geom_col()+
+  labs(title=&quot;Depth versus Magnitude&quot;, subtitle=&quot;Fiji earthquakes&quot;, x=&quot;Depth Category&quot;, y=&quot;Magnitude&quot;, fill=&quot;Depth Category&quot;)</code></pre>
+<p><img src="graphs_files/figure-html/unnamed-chunk-18-1.png" width="672" /> ### Changing the y axis It’s difficult to see much difference in the magnitudes with the y axis. What if we want to focus on the top section of the axis? We can do that with an additional layer, specified by <code>coord_cartesian</code> and the the lower and upper y limits given in the arguments.</p>
+<pre class="r"><code>ggplot(quakeSumm, mapping=aes(x=DepthCat, y=meanMag, fill=DepthCat))+
+  geom_col()+
+  coord_cartesian(ylim = c(4,5))+
+  labs(title=&quot;Depth versus Magnitude&quot;, subtitle=&quot;Fiji earthquakes&quot;, x=&quot;Depth Category&quot;, y=&quot;Magnitude&quot;, fill=&quot;Depth Category&quot;)</code></pre>
+<p><img src="graphs_files/figure-html/unnamed-chunk-19-1.png" width="672" /> ### Themes Suppose I don’t like the grey background, this can be specified with the <code>themes</code> layer.<br />
+R has several different themes for the graphs: -<code>theme_bw()</code>: white background with gridlines -<code>theme_gray()</code>: Grey background (default theme - see above). -<code>theme_dark()</code>: dark background - can be good for contrast. -<code>theme_classic()</code>: white background, no gridlines -<code>theme_light()</code>:white background, light grey gridlines -<code>theme_linedraw()</code>: similar to theme_light but with darker gridlines -<code>theme_minimal()</code>: No border around graph, light grey gridlines -<code>theme_void()</code>: Title and subtitle only, no other features.</p>
+<pre class="r"><code>ggplot(quakeSumm, mapping=aes(x=DepthCat, y=meanMag, fill=DepthCat))+
+  geom_col()+
+  coord_cartesian(ylim = c(4,5))+
+  labs(title=&quot;Depth versus Magnitude&quot;, subtitle=&quot;Fiji earthquakes&quot;, x=&quot;Depth Category&quot;, y=&quot;Magnitude&quot;, fill=&quot;Depth Category&quot;)+
+  theme_classic()</code></pre>
+<p><img src="graphs_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(quakeSumm, mapping=aes(x=DepthCat, y=meanMag, fill=DepthCat))+
+  geom_col(fill=&quot;#3FBC81&quot;)+
+  coord_cartesian(ylim = c(4,5))+
+  labs(title=&quot;Depth versus Magnitude&quot;, subtitle=&quot;Fiji earthquakes&quot;, x=&quot;Depth Category&quot;, y=&quot;Magnitude&quot;, fill=&quot;Depth Category&quot;)+
+  theme_dark()</code></pre>
+<p><img src="graphs_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+</div>
+<div id="saving-your-plot" class="section level3">
+<h3>Saving your plot</h3>
+<p>Obviously, you are likely going to want to put this plot in a presentation or a manuscript submission. Therefore, you’ll need to save it as a figure. This can be done using the command <code>ggsave</code> -This command takes the arguments of the filepath and name you want to save it as, the plot you want saved, and the dimensions. -Note, this is not an additional layer (there is no <code>+</code> on the line before it, but it is a separate command)</p>
+<pre class="r"><code>graph &lt;- ggplot(quakeSumm, mapping=aes(x=DepthCat, y=meanMag, fill=DepthCat))+
+  geom_col()+
+  coord_cartesian(ylim = c(4,5))+
+  labs(title=&quot;Depth versus Magnitude&quot;, subtitle=&quot;Fiji earthquakes&quot;, x=&quot;Depth Category&quot;, y=&quot;Magnitude&quot;, fill=&quot;Depth Category&quot;)+
+  theme_classic()
+graph</code></pre>
+<p><img src="graphs_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<pre class="r"><code>ggsave(&quot;plot1.jpg&quot;, plot=graph, width = 10, height = 7.5)</code></pre>
+<p>You will notice that you now have a file in your folder called “plot1.jpg”</p>
+</div>
+</div>
+<div id="examples" class="section level2">
+<h2>Examples</h2>
+<p>There are nearly endless possibilities for what you can do with graphs in ggplot2. The topic could actually be it’s own workshop! I’ve included a few graphs that I have made for projects along the way and the code that created them below for reference for you.</p>
+<pre class="r"><code>Fit_APOECat_PM_First_graph &lt;- ggplot(data = Fit_APOE_Cat_PM_NAC_Summ, aes(y = PM_First.mean_fit, x = APOE_Cat, fill = APOE_Cat)) + 
+  scale_fill_manual(values = c(&quot;grey30&quot;,&quot;green4&quot;, &quot;salmon3&quot;, &quot;skyblue2&quot;))+
+  geom_col() + 
+  geom_errorbar(width = 0.25, position=position_dodge(0.9), aes(ymin=PM_First.mean_fit-PM_First.se_fit, 
+                ymax =PM_First.mean_fit+PM_First.se_fit)) +
+  coord_cartesian(ylim = c(1.84,1.86))+
+  labs(title = &quot;Baseline Prospective Memory Score by APOE_Cat&quot;, x=&quot;APOE Category&quot;, y=&quot;Baseline Memory Score (O-13)&quot;, fill = &quot;APOE Category&quot;)+
+  theme_classic()
+Fit_APOECat_PM_First_graph
+ggsave(&quot;Fitted_Graphs/Summer2021/APOECatonBaselinePM.jpg&quot;, plot = Fit_APOECat_PM_First_graph, width = 10, height = 7.5)</code></pre>
+<p><img src="images/Graph1.jpg" /></p>
+<pre class="r"><code>Fit_FI_Change_Age_graph &lt;- ggplot(data = Fit_FI_Change_Age_T40_graphdata, aes(x = RecruitmentAge, y = FI_Change.mean_fit, color = T40_Gcar)) +
+  scale_color_manual(values = c(&quot;grey61&quot;, &quot;salmon&quot;))+
+  geom_point() + 
+  geom_smooth(method = &quot;glm&quot;, show.legend=FALSE)+
+  labs(title = &quot;Mean Change in Fluid Intelligence Score by Age and T40 Gcar status&quot;, y= &quot;FI Score Change&quot;, x = &quot;Age at Recruitment (years)&quot;, color = &quot;T40 Status&quot;)+
+  theme_classic()
+Fit_FI_Change_Age_graph
+ggsave(&quot;Fitted_Graphs/FI_Change_Age_by T40.jpg&quot;, plot = Fit_FI_Change_Age_graph, width = 10, height = 7.5)</code></pre>
+<p><img src="images/graph2.jpg" /></p>
+<p>An example of one not made with ggplot2 - This is plotting 1300 individual participants cognitive trajectories on 1 graph.</p>
+<pre class="r"><code>curve(0+0*x+0*x^2, from=0, to=13, ylim=c(-20,30), main=&quot;All participants with 3 test points&quot;, sub=&quot;APOE Neutral = Grey, APOE Protective = Red, APOE Risk = Blue, APOE Mixed = Green&quot;)
+for(i in 1:1326){
+curve(Fil_FI_3Test$First_Score[i]+Fil_FI_3Test$Der1[i]*x+Fil_FI_3Test$Der2[i], from=0, to=13, ylim=c(-20,30), n=500, col=Fil_FI_3Test$APOE_Cat_col[i], add=TRUE, ylab=NULL)
+}</code></pre>
+<p><img src="images/graph3.png" /></p>
+</div>
 </div>
 
 
